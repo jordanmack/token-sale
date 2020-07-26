@@ -6,6 +6,14 @@ The ICO Lock can be added to an SUDT Cell to enable any user to buy SUDT tokens 
 
 > This project is still under active development and should not be used in production environments.
 
+## Example Transaction
+
+Below is an example of a basic purchase transaction. John purchases 10 SUDT tokens from the ICO Cell at a cost of 1 CKByte per SUDT token.
+
+Note: The capacity and cost amounts are normally specified in Shannons, but have been simplified to CKBytes for readability.
+
+![Example Token Purchase](resources/ICO-Lock-Basic-Purchase.png)
+
 ## Constraints
 The ICO Lock enforces the following constraints to ensure proper operation.
 
