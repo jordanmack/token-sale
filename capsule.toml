@@ -1,0 +1,5 @@
+deployment = "deployment.toml"
+
+[[contracts]]
+name = "ico-lock"
+template_type = "Rust"
