@@ -54,35 +54,27 @@ fn build_default_context_and_resources() -> (Context, TransactionBuilder, LocalR
 	resources.binaries.insert("sudt".to_owned(), Loader::default().load_binary("sudt"));
 	resources.binaries.insert("lock-1".to_owned(), Loader::default().load_binary("yes-lock-1"));
 	resources.binaries.insert("lock-2".to_owned(), Loader::default().load_binary("yes-lock-2"));
-	resources.binaries.insert("cap-test-1".to_owned(), Loader::default().load_binary("cap-test-1"));
-	resources.binaries.insert("cap-test-2".to_owned(), Loader::default().load_binary("cap-test-2"));
 	
 	// Deploy Binaries.
 	resources.out_points.insert("ico".to_owned(), context.deploy_contract(resources.binaries.get("ico").unwrap().clone()));
 	resources.out_points.insert("sudt".to_owned(), context.deploy_contract(resources.binaries.get("sudt").unwrap().clone()));
-	resources.out_points.insert("cap-test-1".to_owned(), context.deploy_contract(resources.binaries.get("cap-test-1").unwrap().clone()));
-	resources.out_points.insert("cap-test-2".to_owned(), context.deploy_contract(resources.binaries.get("cap-test-2").unwrap().clone()));
 	resources.out_points.insert("lock-1".to_owned(), context.deploy_contract(ALWAYS_SUCCESS.clone()));
 	
 	// Create Scripts.
-	resources.scripts.insert("lock-1".to_owned(), context.build_script(resources.out_points.get("lock-1").unwrap(), Default::default()).expect("script"));
-	resources.scripts.insert("lock-2".to_owned(), context.build_script(resources.out_points.get("lock-1").unwrap(), [1u8, 1].to_vec().into()).expect("script"));
-	resources.scripts.insert("lock-3".to_owned(), context.build_script(resources.out_points.get("lock-1").unwrap(),[2u8, 1].to_vec().into()).expect("script"));
+	resources.scripts.insert("lock-1".to_owned(), context.build_script(resources.out_points.get("lock-1").unwrap(), [0u8, 1].to_vec().into()).expect("script"));
+	// resources.scripts.insert("lock-2".to_owned(), context.build_script(resources.out_points.get("lock-1").unwrap(), [1u8, 1].to_vec().into()).expect("script"));
+	// resources.scripts.insert("lock-3".to_owned(), context.build_script(resources.out_points.get("lock-1").unwrap(),[2u8, 1].to_vec().into()).expect("script"));
 
 	// Create dependencies.
 	resources.deps.insert("ico".to_owned(), CellDep::new_builder().out_point(resources.out_points.get("ico").unwrap().clone()).build());
 	resources.deps.insert("sudt".to_owned(), CellDep::new_builder().out_point(resources.out_points.get("sudt").unwrap().clone()).build());
 	resources.deps.insert("lock-1".to_owned(), CellDep::new_builder().out_point(resources.out_points.get("lock-1").unwrap().clone()).build());
-	resources.deps.insert("cap-test-1".to_owned(), CellDep::new_builder().out_point(resources.out_points.get("cap-test-1").unwrap().clone()).build());
-	resources.deps.insert("cap-test-2".to_owned(), CellDep::new_builder().out_point(resources.out_points.get("cap-test-2").unwrap().clone()).build());
 
 	// Build transaction.
 	let tx = TransactionBuilder::default()
 		.cell_dep(resources.deps.get(&"ico".to_owned()).unwrap().clone())
 		.cell_dep(resources.deps.get(&"sudt".to_owned()).unwrap().clone())
-		.cell_dep(resources.deps.get(&"lock-1".to_owned()).unwrap().clone())
-		.cell_dep(resources.deps.get(&"cap-test-1".to_owned()).unwrap().clone())
-		.cell_dep(resources.deps.get(&"cap-test-2".to_owned()).unwrap().clone());
+		.cell_dep(resources.deps.get(&"lock-1".to_owned()).unwrap().clone());
 
 	(context, tx, resources)
 }
