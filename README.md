@@ -36,7 +36,7 @@ This project is built in Rust using the [Capsule](https://github.com/nervosnetwo
 capsule build
 ```
 
-#### Running tests on the debug binary:
+### Running tests on the debug binary:
 
 ``` sh
 capsule test
@@ -48,7 +48,7 @@ capsule test
 capsule build --release
 ```
 
-#### Running tests on the release binary:
+### Running tests on the release binary:
 
 ``` sh
 capsule test --release
