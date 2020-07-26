@@ -269,7 +269,7 @@ fn main() -> Result<(), Error>
 	validate_amounts(token_cost, input_capacity_amount, output_capacity_amount, input_token_amount, output_token_amount)?;
 
 	// Args Definition
-	// 0: Governance lock script hash (32 Bytes)
+	// 0: Owner Lock Script Hash (32 Bytes)
 	// 1: Cost per token in CKByte Shannons. (u64 LE 8 Bytes)
 
 	// Rules
@@ -277,9 +277,9 @@ fn main() -> Result<(), Error>
 	// 2. If an input Cell's lock hash matches that specified in the args, owner mode is then enabled and the Cell unlocks unconditionally.
 	// 3. There must be exactly one input Cell with the ICO Lock Script and exactly one output Cell with the ICO Lock Script.
 	// 4. The Type Script of both the input ICO Cell and output ICO Cell must match.
-	// 5. The capacity on the output ICO Cell must be equal or higher than on the input ICO Cell.
-	// 6. The SUDT amount of the output ICO Cell must be equal or lower than the input ICO Cell.
-	// 7. The cost of SUDTs in Shannons must be greater than or equal to 1.
+	// 5. The cost of SUDTs in Shannons must be greater than or equal to 1.
+	// 6. The capacity on the output ICO Cell must be equal or higher than on the input ICO Cell.
+	// 7. The SUDT amount of the output ICO Cell must be equal or lower than the input ICO Cell.
 	// 8. The capacity difference between the input/output ICO Cells divided by the cost must equal the SUDT amount difference between the input/output ICO Cells.
 
 	Ok(())
