@@ -50,8 +50,6 @@ fn build_default_context_and_resources() -> (Context, TransactionBuilder, LocalR
 	// Load Binaries.
 	resources.binaries.insert("ico".to_owned(), Loader::default().load_binary("ico-lock"));
 	resources.binaries.insert("sudt".to_owned(), Loader::default().load_binary("sudt"));
-	resources.binaries.insert("lock-1".to_owned(), Loader::default().load_binary("yes-lock-1"));
-	resources.binaries.insert("lock-2".to_owned(), Loader::default().load_binary("yes-lock-2"));
 	
 	// Deploy Binaries.
 	resources.out_points.insert("ico".to_owned(), context.deploy_contract(resources.binaries.get("ico").unwrap().clone()));
