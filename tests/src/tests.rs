@@ -984,3 +984,93 @@ fn test_ico_invalid_cost()
 	let err = context.verify_tx(&tx, MAX_CYCLES).unwrap_err();
 	assert_error_eq!(err, ScriptError::ValidationFailure(ERROR_COST));
 }
+
+#[test]
+fn test_ico_multiple_separate_ico_cells()
+{
+	// Get defaults.
+	let (mut context, tx, resources) = build_default_context_and_resources();
+
+	// Generate custom inputs and outputs with different lock hashes.
+	let mut lock_hash_cost = [0u8; 32].to_vec();
+	lock_hash_cost.append(&mut 100u64.to_le_bytes().to_vec());
+	let ico_script_1 = context.build_script(resources.out_points.get("ico").unwrap(), lock_hash_cost.clone().into()).expect("script");
+	let sudt_script_1 = context.build_script(resources.out_points.get("sudt").unwrap(), lock_hash_cost.into()).expect("script");
+	let output_1 = CellOutput::new_builder().capacity(Capacity::shannons(1_000).as_u64().pack()).lock(ico_script_1).type_(Some(sudt_script_1).pack()).build();
+	let output_data_1: Bytes = 1_000u128.to_le_bytes().to_vec().into();
+	let input_out_point = context.create_cell(output_1.clone(), output_data_1.clone());
+	let input_1 = CellInput::new_builder().previous_output(input_out_point).build();
+	let mut lock_hash_cost = [1u8; 32].to_vec();
+	lock_hash_cost.append(&mut 100u64.to_le_bytes().to_vec());
+	let ico_script_2 = context.build_script(resources.out_points.get("ico").unwrap(), lock_hash_cost.clone().into()).expect("script");
+	let sudt_script_2 = context.build_script(resources.out_points.get("sudt").unwrap(), lock_hash_cost.into()).expect("script");
+	let output_2 = CellOutput::new_builder().capacity(Capacity::shannons(1_000).as_u64().pack()).lock(ico_script_2).type_(Some(sudt_script_2).pack()).build();
+	let output_data_2: Bytes = 1_000u128.to_le_bytes().to_vec().into();
+	let input_out_point = context.create_cell(output_2.clone(), output_data_2.clone());
+	let input_2 = CellInput::new_builder().previous_output(input_out_point).build();
+	
+	// Prepare inputs.
+	let mut inputs = vec!();
+	inputs.push(input_1);
+	inputs.push(input_2);
+	
+	// Prepare outputs.
+	let mut outputs = vec!();
+	let mut outputs_data = vec!();
+	outputs.push(output_1);
+	outputs.push(output_2);
+	outputs_data.push(output_data_1);
+	outputs_data.push(output_data_2);
+
+	// Populate the transaction, build, and complete.
+	let tx = tx.inputs(inputs).outputs(outputs).outputs_data(outputs_data.pack()).build();
+	let tx = context.complete_tx(tx);
+
+	// Execute the transaction.
+	let _cycles = context.verify_tx(&tx, MAX_CYCLES).expect("pass verification");
+	// println!("Cycles: {}", cycles);
+}
+
+#[test]
+fn test_ico_multiple_separate_ico_cells_invalid()
+{
+	// Get defaults.
+	let (mut context, tx, resources) = build_default_context_and_resources();
+
+	// Generate custom inputs and outputs with the same lock hashes.
+	let mut lock_hash_cost = [0u8; 32].to_vec();
+	lock_hash_cost.append(&mut 100u64.to_le_bytes().to_vec());
+	let ico_script_1 = context.build_script(resources.out_points.get("ico").unwrap(), lock_hash_cost.clone().into()).expect("script");
+	let sudt_script_1 = context.build_script(resources.out_points.get("sudt").unwrap(), lock_hash_cost.clone().into()).expect("script");
+	let output_1 = CellOutput::new_builder().capacity(Capacity::shannons(1_000).as_u64().pack()).lock(ico_script_1).type_(Some(sudt_script_1).pack()).build();
+	let output_data_1: Bytes = 1_000u128.to_le_bytes().to_vec().into();
+	let input_out_point = context.create_cell(output_1.clone(), output_data_1.clone());
+	let input_1 = CellInput::new_builder().previous_output(input_out_point).build();
+	let ico_script_2 = context.build_script(resources.out_points.get("ico").unwrap(), lock_hash_cost.clone().into()).expect("script");
+	let sudt_script_2 = context.build_script(resources.out_points.get("sudt").unwrap(), lock_hash_cost.clone().into()).expect("script");
+	let output_2 = CellOutput::new_builder().capacity(Capacity::shannons(1_000).as_u64().pack()).lock(ico_script_2).type_(Some(sudt_script_2).pack()).build();
+	let output_data_2: Bytes = 1_000u128.to_le_bytes().to_vec().into();
+	let input_out_point = context.create_cell(output_2.clone(), output_data_2.clone());
+	let input_2 = CellInput::new_builder().previous_output(input_out_point).build();
+	
+	// Prepare inputs.
+	let mut inputs = vec!();
+	inputs.push(input_1);
+	inputs.push(input_2);
+	
+	// Prepare outputs.
+	let mut outputs = vec!();
+	let mut outputs_data = vec!();
+	outputs.push(output_1);
+	outputs.push(output_2);
+	outputs_data.push(output_data_1);
+	outputs_data.push(output_data_2);
+
+	// Populate the transaction, build, and complete.
+	let tx = tx.inputs(inputs).outputs(outputs).outputs_data(outputs_data.pack()).build();
+	let tx = context.complete_tx(tx);
+
+	// Execute the transaction.
+	let err = context.verify_tx(&tx, MAX_CYCLES).unwrap_err();
+	assert_error_eq!(err, ScriptError::ValidationFailure(ERROR_STRUCTURE));
+}
