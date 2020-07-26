@@ -73,3 +73,6 @@ Owner mode allows the following actions:
 - Add or remove SUDT tokens from the Cell.
 - Update the token cost.
 - Removal of the ICO Lock in favor of a different lock.
+
+## License
+[MIT](LICENSE)
