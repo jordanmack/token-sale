@@ -1,5 +1,3 @@
-// #![allow(dead_code, unused_imports)]
-
 use super::*;
 use std::collections::HashMap;
 use ckb_testtool::{builtin::ALWAYS_SUCCESS, context::Context};
@@ -18,7 +16,7 @@ const ERROR_EXCHANGE_RATE: i8 = 103;
 const ERROR_COST: i8 = 104;
 const ERROR_STRUCTURE: i8 = 105;
 
-// 
+/// A structure for holding common resources used in multiple tests.
 struct LocalResources
 {
 	binaries: HashMap<String, Bytes>,
@@ -79,6 +77,7 @@ fn build_default_context_and_resources() -> (Context, TransactionBuilder, LocalR
 	(context, tx, resources)
 }
 
+/// Create a input Cell with capacity.
 fn create_input_capacity_cell(context: &mut Context, resources: &LocalResources, capacity: u64) -> CellInput
 {
 	let (output, output_data) = create_output_capacity_cell(context, resources, capacity);
@@ -88,6 +87,7 @@ fn create_input_capacity_cell(context: &mut Context, resources: &LocalResources,
 	input
 }
 
+/// Create an output Cell with capacity.
 fn create_output_capacity_cell(_context: &mut Context, resources: &LocalResources, capacity: u64) -> (CellOutput, Bytes)
 {
 	let lock_script = resources.scripts.get("lock-1").unwrap().clone();
@@ -101,6 +101,7 @@ fn create_output_capacity_cell(_context: &mut Context, resources: &LocalResource
 	(output, output_data)
 }
 
+/// Create an input ICO Cell consisting of an ICO Lock on an SUDT token.
 fn create_input_ico_cell(context: &mut Context, resources: &LocalResources, capacity: u64, tokens: u128, cost: u64, ico_owner_mode: bool, sudt_owner_mode: bool) -> CellInput
 {
 	let (output, output_data) = create_output_ico_cell(context, resources, capacity, tokens, cost, ico_owner_mode, sudt_owner_mode);
@@ -110,6 +111,7 @@ fn create_input_ico_cell(context: &mut Context, resources: &LocalResources, capa
 	input
 }
 
+/// Create an output ICO Cell consisting of an ICO Lock on an SUDT token.
 fn create_output_ico_cell(context: &mut Context, resources: &LocalResources, capacity: u64, tokens: u128, cost: u64, ico_owner_mode: bool, sudt_owner_mode: bool) -> (CellOutput, Bytes)
 {
 	let lock_script = resources.scripts.get("lock-1").unwrap().clone();
@@ -136,6 +138,7 @@ fn create_output_ico_cell(context: &mut Context, resources: &LocalResources, cap
 	(output, output_data)
 }
 
+/// Create an input SUDT Cell.
 fn create_input_sudt_cell(context: &mut Context, resources: &LocalResources, capacity: u64, tokens: u128, is_owner_mode: bool) -> CellInput
 {
 	let (output, output_data) = create_output_sudt_cell(context, resources, capacity, tokens, is_owner_mode);
@@ -145,6 +148,7 @@ fn create_input_sudt_cell(context: &mut Context, resources: &LocalResources, cap
 	input
 }
 
+/// Create an output SUDT Cell.
 fn create_output_sudt_cell(context: &mut Context, resources: &LocalResources, capacity: u64, tokens: u128, is_owner_mode: bool) -> (CellOutput, Bytes)
 {
 	let lock_script = resources.scripts.get("lock-1").unwrap().clone();
