@@ -5,18 +5,19 @@
 //! The Lock Script can be added to any SUDT Cell to enable any user to buy SUDT tokens for a predefined price in CKBytes.
 //! 
 //! Args Definition
-//! 0: Owner Lock Script Hash (32 Bytes)
-//! 1: Cost per token in CKByte Shannons. (u64 LE 8 Bytes)
+//! 0: The Owner's Lock Script Hash (32 Bytes)
+//! 1: The Cost per token in CKByte Shannons. (u64 LE 8 Bytes)
+//! 2: A unique identifier for the Token Sale Cell. (u32 LE 4 bytes)
 //! 
 //! Constraints
-//! 1. The arguments must be equal or greater than 40 bytes in length.
+//! 1. The arguments must be equal or greater than 40 bytes in length. The arguments length will be 44 bytes or more with a unique identifier, but the Script does not check this.
 //! 2. If an input Cell's lock hash matches that specified in the args, owner mode is then enabled and the Cell unlocks unconditionally.
-//! 3. There must be exactly one input Cell with the ICO Lock Script and exactly one output Cell with the ICO Lock Script.
-//! 4. The Type Script of both the input ICO Cell and output ICO Cell must match.
+//! 3. The transaction must have exactly one input Cell with the Token Sale Lock Script and exactly one output Cell with the Token Sale Lock Script. These Cells must have a matching unique identifier.
+//! 4. The Type Script of both the input Token Sale Cell and output Token Sale Cell must match.
 //! 5. The cost of SUDTs in Shannons must be greater than or equal to 1.
-//! 6. The capacity on the output ICO Cell must be equal or higher than on the input ICO Cell.
-//! 7. The SUDT amount of the output ICO Cell must be equal or lower than the input ICO Cell.
-//! 8. The capacity difference between the input/output ICO Cells divided by the cost must equal the SUDT amount difference between the input/output ICO Cells.
+//! 6. The capacity on the output Token Sale Cell must be higher than on the input Token Sale Cell.
+//! 7. The SUDT amount of the output Token Sale Cell must be lower than the input Token Sale Cell.
+//! 8. The capacity difference between the input/output Token Sale Cells divided by the cost must equal the SUDT amount difference between the input/output Token Sale Cells.
 
 #![no_std]
 #![no_main]
