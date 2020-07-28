@@ -227,7 +227,6 @@ fn validate_token_sale_outputs(lock_script: &Script, type_script: &Script) -> Re
 	// Loop through all the output Cells.
 	let mut i = 0;
 	let mut token_sale_lock_cells = 0;
-	let mut token_sale_lock_matching_type_cells = 0;
 	loop
 	{
 		let cell = match load_cell(i, Source::Output)
@@ -240,24 +239,18 @@ fn validate_token_sale_outputs(lock_script: &Script, type_script: &Script) -> Re
 		// Count up matching ICO Cells and ICO Cells with a matching SUDT Type Script.
 		let cell_lock_bytes = &cell.lock().as_bytes()[..];
 		let cell_type_bytes = &cell.type_().as_bytes()[..];
-		if cell_lock_bytes == lock_script_bytes
+		if cell_lock_bytes == lock_script_bytes && cell_type_bytes == type_script_bytes
 		{
 			token_sale_lock_cells += 1;
-
-			if cell_type_bytes == type_script_bytes
-			{
-				token_sale_lock_matching_type_cells += 1;
-			}
 		}
 
 		i += 1;
 	}
 
 	// debug!("Total ICO Lock Cells: {}", token_sale_lock_cells);
-	// debug!("Total ICO Lock Cells w/ Matching Type Script: {}", token_sale_lock_matching_type_cells);
 
 	// There must be exactly one output ICO Lock Cell and it must have a Type Script matching the input ICO Lock Cell.
-	if token_sale_lock_cells != 1 || token_sale_lock_matching_type_cells != 1
+	if token_sale_lock_cells != 1
 	{
 		return Err(Error::InvalidStructure);
 	}
