@@ -35,7 +35,7 @@ use ckb_std::{default_alloc, entry};
 use ckb_std::ckb_constants::Source;
 use ckb_std::ckb_types::{bytes::Bytes, packed::Bytes as Args, packed::Script, prelude::*};
 use ckb_std::error::{SysError};
-use ckb_std::high_level::{load_cell, load_cell_capacity, load_cell_data, load_cell_lock_hash, load_script, QueryIter};
+use ckb_std::high_level::{load_cell, load_cell_data, load_cell_lock_hash, load_script, QueryIter};
 
 // Constants
 const COST_AMOUNT_LEN: usize = 8; // Number of bytes for the token cost amount. (u64)
@@ -135,7 +135,7 @@ fn determine_token_sale_cell_amounts(lock_script: &Script, type_script: &Script,
 		// Check if this Cell matches the Lock Script and Type Script.
 		if lock.as_bytes()[..] == lock_script_bytes[..] && type_.unwrap().as_bytes()[..] == type_script_bytes[..]
 		{
-			capacity += load_cell_capacity(i, source)?;
+			capacity += cell.capacity().unpack();
 
 			let data = load_cell_data(i, source)?;
 			if data.len() == SUDT_AMOUNT_DATA_LEN
