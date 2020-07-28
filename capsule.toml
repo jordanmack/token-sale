@@ -1,7 +1,7 @@
 deployment = "deployment.toml"
 
 [[contracts]]
-name = "ico-lock"
+name = "token-sale"
 template_type = "Rust"
 
 [[contracts]]

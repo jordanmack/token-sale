@@ -1,8 +1,8 @@
-//! Simple ICO Lock
-//! https://github.com/jordanmack/ico-lock
+//! Simple Token Sale Lock Script
+//! https://github.com/jordanmack/token-sale
 //! 
 //! A simple Lock Script for handling the sale of SUDT tokens for CKBytes on Nervos CKB.
-//! The ICO Lock can be added to an SUDT Cell to enable any user to buy SUDT tokens for a predefined price in CKBytes.
+//! The Lock Script can be added to any SUDT Cell to enable any user to buy SUDT tokens for a predefined price in CKBytes.
 //! 
 //! Args Definition
 //! 0: Owner Lock Script Hash (32 Bytes)

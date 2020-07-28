@@ -49,17 +49,17 @@ dependencies = [
 ]
 
 [[package]]
-name = "ico-lock"
-version = "0.1.0"
-dependencies = [
- "ckb-std",
-]
-
-[[package]]
 name = "molecule"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "663f76cc52219e5957e2f5563cce9d89f98aa8503c9c898b5c412d97df663998"
 dependencies = [
  "cfg-if",
+]
+
+[[package]]
+name = "token-sale"
+version = "0.1.0"
+dependencies = [
+ "ckb-std",
 ]

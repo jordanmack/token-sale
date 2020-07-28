@@ -167,7 +167,7 @@ fn create_output_sudt_cell(context: &mut Context, resources: &LocalResources, ca
 }
 
 #[test]
-fn test_ico_no_change()
+fn test_no_change()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -198,7 +198,7 @@ fn test_ico_no_change()
 }
 
 #[test]
-fn test_ico_buy()
+fn test_buy()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -237,7 +237,7 @@ fn test_ico_buy()
 }
 
 #[test]
-fn test_ico_add_lock()
+fn test_add_lock()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -273,7 +273,7 @@ fn test_ico_add_lock()
 }
 
 #[test]
-fn test_ico_remove_lock()
+fn test_remove_lock()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = true;
@@ -309,7 +309,7 @@ fn test_ico_remove_lock()
 }
 
 #[test]
-fn test_ico_remove_lock_no_owner()
+fn test_remove_lock_no_owner()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -345,7 +345,7 @@ fn test_ico_remove_lock_no_owner()
 }
 
 #[test]
-fn test_ico_split_lock()
+fn test_split_lock()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = true;
@@ -381,7 +381,7 @@ fn test_ico_split_lock()
 }
 
 #[test]
-fn test_ico_split_lock_no_owner()
+fn test_split_lock_no_owner()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -415,7 +415,7 @@ fn test_ico_split_lock_no_owner()
 }
 
 #[test]
-fn test_ico_combine_lock()
+fn test_combine_lock()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = true;
@@ -450,7 +450,7 @@ fn test_ico_combine_lock()
 }
 
 #[test]
-fn test_ico_combine_lock_no_owner()
+fn test_combine_lock_no_owner()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -485,7 +485,7 @@ fn test_ico_combine_lock_no_owner()
 }
 
 #[test]
-fn test_ico_buy_invalid_ckbytes()
+fn test_buy_invalid_ckbytes()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -521,7 +521,7 @@ fn test_ico_buy_invalid_ckbytes()
 }
 
 #[test]
-fn test_ico_buy_invalid_sudt()
+fn test_buy_invalid_sudt()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -556,7 +556,7 @@ fn test_ico_buy_invalid_sudt()
 }
 
 #[test]
-fn test_ico_sell()
+fn test_sell()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -592,7 +592,7 @@ fn test_ico_sell()
 }
 
 #[test]
-fn test_ico_change_cost()
+fn test_change_cost()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = true;
@@ -628,7 +628,7 @@ fn test_ico_change_cost()
 }
 
 #[test]
-fn test_ico_change_cost_no_owner()
+fn test_change_cost_no_owner()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -664,7 +664,7 @@ fn test_ico_change_cost_no_owner()
 }
 
 #[test]
-fn test_ico_remove_capacity()
+fn test_remove_capacity()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = true;
@@ -700,7 +700,7 @@ fn test_ico_remove_capacity()
 }
 
 #[test]
-fn test_ico_remove_capacity_no_owner()
+fn test_remove_capacity_no_owner()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -736,7 +736,7 @@ fn test_ico_remove_capacity_no_owner()
 }
 
 #[test]
-fn test_ico_remove_tokens()
+fn test_remove_tokens()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = true;
@@ -772,7 +772,7 @@ fn test_ico_remove_tokens()
 }
 
 #[test]
-fn test_ico_remove_tokens_no_owner()
+fn test_remove_tokens_no_owner()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -808,7 +808,7 @@ fn test_ico_remove_tokens_no_owner()
 }
 
 #[test]
-fn test_ico_add_tokens()
+fn test_add_tokens()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = true;
@@ -844,7 +844,7 @@ fn test_ico_add_tokens()
 }
 
 #[test]
-fn test_ico_add_tokens_no_owner()
+fn test_add_tokens_no_owner()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -880,7 +880,7 @@ fn test_ico_add_tokens_no_owner()
 }
 
 #[test]
-fn test_ico_add_tokens_dual_owner()
+fn test_add_tokens_dual_owner()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = true;
@@ -916,7 +916,7 @@ fn test_ico_add_tokens_dual_owner()
 }
 
 #[test]
-fn test_ico_invalid_args()
+fn test_invalid_args()
 {
 	// Get defaults.
 	let (mut context, tx, resources) = build_default_context_and_resources();
@@ -950,7 +950,7 @@ fn test_ico_invalid_args()
 }
 
 #[test]
-fn test_ico_invalid_cost()
+fn test_invalid_cost()
 {
 	// Constants
 	const ICO_OWNER_MODE: bool = false;
@@ -986,7 +986,7 @@ fn test_ico_invalid_cost()
 }
 
 #[test]
-fn test_ico_multiple_separate_ico_cells()
+fn test_multiple_separate_ico_cells()
 {
 	// Get defaults.
 	let (mut context, tx, resources) = build_default_context_and_resources();
@@ -1032,7 +1032,7 @@ fn test_ico_multiple_separate_ico_cells()
 }
 
 #[test]
-fn test_ico_multiple_separate_ico_cells_invalid()
+fn test_multiple_separate_ico_cells_invalid()
 {
 	// Get defaults.
 	let (mut context, tx, resources) = build_default_context_and_resources();
