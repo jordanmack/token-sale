@@ -105,7 +105,7 @@ fn check_owner_mode(args: &Args) -> Result<bool, Error>
 }
 
 /// Determine the capacity and token amount in all Cells matching the specified Lock Script and Type Script.
-fn determine_ico_cell_amounts(lock_script: &Script, type_script: &Script, source: Source) -> Result<(u64, u128), Error>
+fn determine_token_sale_cell_amounts(lock_script: &Script, type_script: &Script, source: Source) -> Result<(u64, u128), Error>
 {
 	let mut buf = [0u8; SUDT_AMOUNT_DATA_LEN];
 	let lock_script_bytes = lock_script.as_bytes();
@@ -178,14 +178,14 @@ fn determine_token_cost(args: &Args) -> Result<u64, Error>
 /// Ensure that all the capacity, token, and cost amounts are valid.
 fn validate_amounts(token_cost: u64, input_capacity_amount: u64, output_capacity_amount: u64, input_token_amount: u128, output_token_amount: u128) -> Result<(), Error>
 {
-	// The output capacity must be equal or more than the input capacity.
-	if output_capacity_amount < input_capacity_amount
+	// The output capacity must be more than the input capacity.
+	if output_capacity_amount <= input_capacity_amount
 	{
 		return Err(Error::AmountCkbytes);
 	}
 
-	// The output tokens must be equal or less than the input tokens.
-	if output_token_amount > input_token_amount
+	// The output tokens must be less than the input tokens.
+	if output_token_amount >= input_token_amount
 	{
 		return Err(Error::AmountSudt);
 	}
@@ -200,7 +200,7 @@ fn validate_amounts(token_cost: u64, input_capacity_amount: u64, output_capacity
 }
 
 /// Ensure that a valid input ICO Cell exists.
-fn validate_ico_inputs() -> Result<(Script, Script), Error>
+fn validate_token_sale_inputs() -> Result<(Script, Script), Error>
 {
 	// Verify that index 1 does not exist.
 	if load_cell(1, Source::GroupInput).is_ok()
@@ -209,25 +209,25 @@ fn validate_ico_inputs() -> Result<(Script, Script), Error>
 	}
 
 	// Load the ico cell. There should be exactly 1.
-	let ico_cell = load_cell(0, Source::GroupInput)?;
+	let token_sale_cell = load_cell(0, Source::GroupInput)?;
 
 	// Extract the Scripts. Both must exist.
-	let lock_script = ico_cell.lock();
-	let type_script = ico_cell.type_().to_opt().ok_or(Error::InvalidStructure)?;
+	let lock_script = token_sale_cell.lock();
+	let type_script = token_sale_cell.type_().to_opt().ok_or(Error::InvalidStructure)?;
 
 	Ok((lock_script, type_script))
 }
 
 /// Ensure that a valid output ICO Cell exists.
-fn validate_ico_outputs(lock_script: &Script, type_script: &Script) -> Result<(), Error>
+fn validate_token_sale_outputs(lock_script: &Script, type_script: &Script) -> Result<(), Error>
 {
 	let lock_script_bytes = &lock_script.as_bytes()[..];
 	let type_script_bytes = &type_script.as_bytes()[..];
 
 	// Loop through all the output Cells.
 	let mut i = 0;
-	let mut ico_lock_cells = 0;
-	let mut ico_lock_matching_type_cells = 0;
+	let mut token_sale_lock_cells = 0;
+	let mut token_sale_lock_matching_type_cells = 0;
 	loop
 	{
 		let cell = match load_cell(i, Source::Output)
@@ -242,22 +242,22 @@ fn validate_ico_outputs(lock_script: &Script, type_script: &Script) -> Result<()
 		let cell_type_bytes = &cell.type_().as_bytes()[..];
 		if cell_lock_bytes == lock_script_bytes
 		{
-			ico_lock_cells += 1;
+			token_sale_lock_cells += 1;
 
 			if cell_type_bytes == type_script_bytes
 			{
-				ico_lock_matching_type_cells += 1;
+				token_sale_lock_matching_type_cells += 1;
 			}
 		}
 
 		i += 1;
 	}
 
-	// debug!("Total ICO Lock Cells: {}", ico_lock_cells);
-	// debug!("Total ICO Lock Cells w/ Matching Type Script: {}", ico_lock_matching_type_cells);
+	// debug!("Total ICO Lock Cells: {}", token_sale_lock_cells);
+	// debug!("Total ICO Lock Cells w/ Matching Type Script: {}", token_sale_lock_matching_type_cells);
 
 	// There must be exactly one output ICO Lock Cell and it must have a Type Script matching the input ICO Lock Cell.
-	if ico_lock_cells != 1 || ico_lock_matching_type_cells != 1
+	if token_sale_lock_cells != 1 || token_sale_lock_matching_type_cells != 1
 	{
 		return Err(Error::InvalidStructure);
 	}
@@ -285,14 +285,14 @@ fn main() -> Result<(), Error>
 	}
 
 	// Check the inputs to ensure there is a single input ICO Cell.
-	let (lock_script, type_script) = validate_ico_inputs()?;
+	let (lock_script, type_script) = validate_token_sale_inputs()?;
 
 	// Check the outputs to ensure there is a single output ICO Cell.
-	validate_ico_outputs(&lock_script, &type_script)?;
+	validate_token_sale_outputs(&lock_script, &type_script)?;
 
 	// Find all the capacity, token, and cost amounts.
-	let (input_capacity_amount, input_token_amount) = determine_ico_cell_amounts(&lock_script, &type_script, Source::GroupInput)?;
-	let (output_capacity_amount, output_token_amount) = determine_ico_cell_amounts(&lock_script, &type_script, Source::Output)?;
+	let (input_capacity_amount, input_token_amount) = determine_token_sale_cell_amounts(&lock_script, &type_script, Source::GroupInput)?;
+	let (output_capacity_amount, output_token_amount) = determine_token_sale_cell_amounts(&lock_script, &type_script, Source::Output)?;
 	let token_cost = determine_token_cost(&args)?;
 
 	// debug!("Input/Output Capacity: {}/{}", input_capacity_amount, output_capacity_amount);
