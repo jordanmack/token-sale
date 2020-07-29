@@ -112,8 +112,8 @@ fn determine_token_sale_cell_amounts(lock_script: &Script, type_script: &Script,
 	let type_script_bytes = type_script.as_bytes();
 
 	// Loop through all Cells in the specified source.
-	let mut capacity = 0;
-	let mut tokens = 0;
+	let mut total_capacity = 0;
+	let mut total_tokens = 0;
 	let mut i = 0;
 	loop
 	{
@@ -124,6 +124,7 @@ fn determine_token_sale_cell_amounts(lock_script: &Script, type_script: &Script,
 			Err(e) => return Err(e.into()),
 		};
 
+		// Process only entries with both a Lock and Type.
 		let lock = cell.lock();
 		let type_ = cell.type_().to_opt();
 		if type_.is_none()
@@ -135,13 +136,13 @@ fn determine_token_sale_cell_amounts(lock_script: &Script, type_script: &Script,
 		// Check if this Cell matches the Lock Script and Type Script.
 		if lock.as_bytes()[..] == lock_script_bytes[..] && type_.unwrap().as_bytes()[..] == type_script_bytes[..]
 		{
-			capacity += cell.capacity().unpack();
-
+			// Ensure the Cell data is valid then add the capacity and token amount to the totals.
 			let data = load_cell_data(i, source)?;
 			if data.len() == SUDT_AMOUNT_DATA_LEN
 			{
+				total_capacity += cell.capacity().unpack();
 				buf.copy_from_slice(&data);
-				tokens += u128::from_le_bytes(buf);
+				total_tokens += u128::from_le_bytes(buf);
 			}
 			else
 			{
@@ -152,7 +153,7 @@ fn determine_token_sale_cell_amounts(lock_script: &Script, type_script: &Script,
 		i += 1;
 	}
 
-	Ok((capacity, tokens))
+	Ok((total_capacity, total_tokens))
 }
 
 /// Retrieve the token cost from the args.
@@ -161,9 +162,11 @@ fn determine_token_cost(args: &Args) -> Result<u64, Error>
 	let args: Bytes = args.unpack();
 	let mut buf = [0u8; COST_AMOUNT_LEN];
 
+	// The token amount immediately follows the Lock Hash in the args.
 	let slice_start = LOCK_HASH_LEN;
 	let slice_end = slice_start + COST_AMOUNT_LEN;
 
+	// Copy bytes from the args into a u64. 
 	buf.copy_from_slice(&args[slice_start..slice_end]);
 	let token_cost = u64::from_le_bytes(buf);
 
