@@ -90,7 +90,7 @@ The Token Sale Lock Script uses the following constraints to ensure proper opera
 5. The cost of SUDTs in Shannons must be greater than or equal to 1.
 6. The capacity on the output Token Sale Cell must be higher than on the input Token Sale Cell.
 7. The SUDT amount of the output Token Sale Cell must be lower than the input Token Sale Cell.
-8. The capacity difference between the input/output Token Sale Cells divided by the cost must equal the SUDT amount difference between the input/output Token Sale Cells.
+8. The capacity difference between the input/output Token Sale Cells must equal the SUDT amount difference between the input/output Token Sale Cells multiplied by the cost.
 
 ## License
 [MIT](LICENSE)
