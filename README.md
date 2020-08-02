@@ -1,6 +1,6 @@
 # Simple Token Sale Lock Script
 
-> This project is still under active development and should not be used in production environments.
+> This project is intended for demonstration purposes and should not be used in production environments.
 
 A simple Lock Script for handling the sale of [SUDT](https://talk.nervos.org/t/rfc-simple-udt-draft-spec/4333) tokens for CKBytes on Nervos CKB.
 
