@@ -39,7 +39,7 @@ use ckb_std::high_level::{load_cell, load_cell_data, load_cell_lock_hash, load_s
 
 // Constants
 const COST_AMOUNT_LEN: usize = 8; // Number of bytes for the token cost amount. (u64)
-const LOCK_HASH_LEN: usize = 32; // Number of bytes for a lock hash.
+const LOCK_HASH_LEN: usize = 32; // Number of bytes for a lock hash. (Blake2b)
 const SUDT_AMOUNT_DATA_LEN: usize = 16; // Number of bytes for an SUDT amount. (u128)
 const ARGS_LEN: usize = LOCK_HASH_LEN + COST_AMOUNT_LEN; // Number of bytes required for args.
 
