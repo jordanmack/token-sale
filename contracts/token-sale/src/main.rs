@@ -12,7 +12,7 @@
 //! Constraints
 //! 1. The arguments must be equal or greater than 40 bytes in length. The arguments length will be 44 bytes or more with a unique identifier, but the Script does not check this.
 //! 2. If an input Cell's lock hash matches that specified in the args, owner mode is then enabled and the Cell unlocks unconditionally.
-//! 3. The transaction must have exactly one input Cell with the Token Sale Lock Script and exactly one output Cell with the Token Sale Lock Script. These Lock Scripts must have the same arguments.
+//! 3. The transaction must have exactly one input Cell and one output Cell using the Token Sale Lock Script. These Lock Scripts must have the same arguments.
 //! 4. The Type Script of both the input Token Sale Cell and output Token Sale Cell must match.
 //! 5. The cost of SUDTs in Shannons must be greater than or equal to 1.
 //! 6. The capacity on the output Token Sale Cell must be higher than on the input Token Sale Cell.
