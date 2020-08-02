@@ -186,7 +186,7 @@ fn validate_amounts(token_cost: u64, input_capacity_amount: u64, output_capacity
 		return Err(Error::AmountSudt);
 	}
 
-	// The capacity received must properly equate to the tokens released at the proper token cost.
+	// The capacity received must properly equate to the tokens sold at the proper token cost.
 	if (output_capacity_amount - input_capacity_amount) as u128 != (input_token_amount - output_token_amount) * token_cost as u128
 	{
 		return Err(Error::ExchangeRate);
