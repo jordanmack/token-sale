@@ -133,7 +133,7 @@ fn determine_token_sale_cell_amounts(lock_script: &Script, type_script: &Script,
 			let data = load_cell_data(i, source)?;
 			if data.len() >= SUDT_AMOUNT_DATA_LEN
 			{
-				buf.copy_from_slice(&data);
+				buf.copy_from_slice(&data[0..SUDT_AMOUNT_DATA_LEN]);
 				total_tokens += u128::from_le_bytes(buf);
 				total_capacity += cell.capacity().unpack();
 			}
