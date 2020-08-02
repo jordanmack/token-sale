@@ -131,7 +131,7 @@ fn determine_token_sale_cell_amounts(lock_script: &Script, type_script: &Script,
 		{
 			// Ensure the Cell data is valid then add the capacity and token amount to the totals.
 			let data = load_cell_data(i, source)?;
-			if data.len() == SUDT_AMOUNT_DATA_LEN
+			if data.len() >= SUDT_AMOUNT_DATA_LEN
 			{
 				buf.copy_from_slice(&data);
 				total_tokens += u128::from_le_bytes(buf);
