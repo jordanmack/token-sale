@@ -108,8 +108,8 @@ fn check_owner_mode(args: &Args) -> Result<bool, Error>
 fn determine_token_sale_cell_amounts(lock_script: &Script, type_script: &Script, source: Source) -> Result<(u64, u128), Error>
 {
 	let mut buf = [0u8; SUDT_AMOUNT_DATA_LEN];
-	let lock_script_bytes = lock_script.as_bytes();
-	let type_script_bytes = type_script.as_bytes();
+	let lock_script_bytes = &lock_script.as_bytes()[..];
+	let type_script_bytes = &type_script.as_bytes()[..];
 
 	// Loop through all Cells in the specified source.
 	let mut total_capacity = 0;
@@ -125,7 +125,9 @@ fn determine_token_sale_cell_amounts(lock_script: &Script, type_script: &Script,
 		};
 
 		// Check if this Cell matches the Lock Script and Type Script.
-		if cell.lock().as_bytes()[..] == lock_script_bytes[..] && cell.type_().as_bytes()[..] == type_script_bytes[..]
+		let cell_lock_bytes = &cell.lock().as_bytes()[..];
+		let cell_type_bytes = &cell.type_().as_bytes()[..];
+		if cell_lock_bytes == lock_script_bytes && cell_type_bytes == type_script_bytes
 		{
 			// Ensure the Cell data is valid then add the capacity and token amount to the totals.
 			let data = load_cell_data(i, source)?;
